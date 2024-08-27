@@ -26,6 +26,7 @@ document.getElementById('dentalForm').addEventListener('submit', function(event)
         address: formData.get('address'),
         dob: formData.get('dob'),
         visitDate: formData.get('visitDate'),
+        appointment: formData.get('appointment'),
         plan: []
     };
 
@@ -64,7 +65,9 @@ function displayRecords() {
         row.insertCell(3).textContent = record.address;
         row.insertCell(4).textContent = record.dob;
         row.insertCell(5).textContent = record.visitDate;
-        const actionCell = row.insertCell(6);
+        row.insertCell(6).textContent = record.appointment;
+        const actionCell = row.insertCell(7);
+        
         const editButton = document.createElement('button');
         editButton.textContent = 'Sửa';
         editButton.onclick = () => editRecord(index);
@@ -81,12 +84,13 @@ function editRecord(index) {
     document.getElementById('address').value = record.address;
     document.getElementById('dob').value = record.dob;
     document.getElementById('visitDate').value = record.visitDate;
+    document.getElementById('appointment').value = record.appointment;
 
     const tableBody = document.getElementById('treatmentTableBody');
     tableBody.innerHTML = '';
     record.plan.forEach(planItem => {
         const newRow = tableBody.insertRow();
-        const cols = ['date', 'tooth', 'treatment', 'cost', 'paid', 'remaining', 'doctor', 'appointment'];
+        const cols = ['date', 'tooth', 'treatment', 'cost', 'paid', 'remaining', 'doctor'];
         cols.forEach(col => {
             const cell = newRow.insertCell();
             const input = document.createElement('input');
@@ -111,9 +115,28 @@ function deleteRecord() {
     }
 }
 
+function addNew(){
+    document.getElementById("searchPhone").value = "";
+    document.getElementById("name").value = "";
+    document.getElementById("phone").value = "";
+    // document.getElementById("myInputField").value = "";
+    // document.getElementById("myInputField").value = "";
+    // document.getElementById("myInputField").value = "";
+
+    var inputs = document.querySelectorAll("#treatmentTableBody input, #treatmentTableBody textarea");
+    
+    // Lặp qua từng input và textarea để xóa dữ liệu
+    inputs.forEach(function(input) {
+        if (input.type !== "submit" && input.type !== "button" && !input.hasAttribute('readonly')) {
+            input.value = "";
+        }
+    });
+}
+
 function searchLichHen(){
     const lichhen = document.getElementById('lichhen').value;
-    let filteredRecords = records.filter(record => record.visitDate.toLowerCase().includes(lichhen));
+    let filteredRecords = records.filter(record => record.appointment.toLowerCase().includes(lichhen));
+
 
     const tableBody = document.getElementById('recordTableBody');
     tableBody.innerHTML = '';
@@ -125,7 +148,8 @@ function searchLichHen(){
         row.insertCell(3).textContent = record.address;
         row.insertCell(4).textContent = record.dob;
         row.insertCell(5).textContent = record.visitDate;
-        const actionCell = row.insertCell(6);
+        row.insertCell(6).textContent = record.appointment;
+        const actionCell = row.insertCell(7);
         const editButton = document.createElement('button');
         editButton.textContent = 'Sửa';
         editButton.onclick = () => editRecord(records.indexOf(record));
@@ -153,6 +177,7 @@ function searchRecords() {
         row.insertCell(3).textContent = record.address;
         row.insertCell(4).textContent = record.dob;
         row.insertCell(5).textContent = record.visitDate;
+        row.insertCell(6).textContent = record.appointment;
         const actionCell = row.insertCell(6);
         const editButton = document.createElement('button');
         editButton.textContent = 'Sửa';
@@ -161,10 +186,60 @@ function searchRecords() {
     });
 }
 
-
 function saveToFile() {
 
-    const confirmation = confirm("Bạn có chắc chắn muốn lưu dữ liệu đầu tháng đến hiện tại? \n Việc này sẽ xóa dữ liệu hiện tại và lưu vào file");
+    const confirmation = confirm("Bạn có chắc chắn muốn lưu dữ liệu đầu tháng đến hiện tại?");
+
+    if(confirmation){
+        const today = new Date();
+        const dataStr = JSON.stringify(records, null, 2);
+        const blob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `DucHanh-${getFormattedDate()}.txt`;
+        document.body.appendChild(a);
+        if(isLastDayOfMonth(today)){
+            a.click();
+        }else{
+            alert('Chỉ ngày cuối tháng mới được lưu file nh')
+        }
+       
+        document.body.removeChild(a);
+
+        // localStorage.clear();
+        // location.reload();
+    }
+   
+}
+function saveToFileChange(){
+    const confirmation = confirm("Bạn có chắc chắn muốn lưu dữ liệu và chuyển sang máy tính khác");
+
+    if(confirmation){
+        const today = new Date();
+        const dataStr = JSON.stringify(records, null, 2);
+        const blob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `DucHanh-${getFormattedDate()}.txt`;
+        document.body.appendChild(a);
+        // if(isLastDayOfMonth(today)){
+        //     a.click();
+        // }else{
+        //     alert('Chỉ ngày cuối tháng mới được lưu file nh')
+        // }
+        a.click();
+        
+       
+        document.body.removeChild(a);
+    }
+}
+
+
+function saveToFileDelete() {
+
+    const confirmation = confirm("Bạn có chắc chắn muốn lưu dữ liệu và xóa hết dữ liệu hiện có");
 
     if(confirmation){
         const today = new Date();

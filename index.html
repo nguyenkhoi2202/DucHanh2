@@ -61,8 +61,12 @@
 <body>
     <div class="container">
         <h1 class="my-4">Nha Khoa Đức Hạnh</h1>
+        <div id="searchSection" class="mb-4" style="margin-right: 50px;">
+            <button type="button" class="btn btn-primary" onclick="addNew()">Thêm Bệnh nhân</button>
+        </div>
 
         <div class="flexdata" style="justify-content: center;" >
+
             <div id="searchSection" class="mb-4" style="margin-right: 50px;">
                 <label for="searchPhone" class="form-label">Tìm kiếm theo số điện thoại:</label>
                 <input type="text" id="searchPhone" class="form-control" oninput="searchRecords()">
@@ -91,14 +95,20 @@
                 </div>
 
                 <div class="mb-3" style="margin-right: 50px;">
-                    <label for="dob" class="form-label">Ngày sinh:</label>
-                    <input type="date" id="dob" name="dob" class="form-control" required>
+                    <label for="dob" class="form-label">Tuổi:</label>
+                    <input type="text" id="dob" name="dob" class="form-control" required>
                 </div>
     
-                <div class="mb-3">
+                <div class="mb-3" style="margin-right: 50px;">
                     <label for="visitDate" class="form-label">Ngày khám:</label>
                     <input type="date" id="visitDate" name="visitDate" class="form-control" required>
                 </div>
+                <div class="mb-3">
+                    <label for="appointmentDate" class="form-label">Ngày hẹn:</label>
+                    <td><input type="date" id="appointment" name="appointment" class="form-control"></td>
+                </div>
+
+                
             </div>
            
 
@@ -118,19 +128,17 @@
                         <th>Trả</th>
                         <th>Còn</th>
                         <th>Bác sĩ</th>
-                        <th>Hẹn</th>
                     </tr>
                 </thead>
                 <tbody id="treatmentTableBody">
                     <tr>
-                        <td><input type="date" name="date" class="form-control"></td>
+                        <td><input style="width: 130px;" type="date" name="date" class="form-control"></td>
                         <td><input type="text" name="tooth" class="form-control"></td>
-                        <td><input type="text" name="treatment" class="form-control"></td>
+                        <td><input style="width: 500px;" name="treatment" class="form-control"></td>
                         <td><input type="number" name="cost" class="form-control"></td>
                         <td><input type="number" name="paid" class="form-control"></td>
                         <td><input type="number" name="remaining"  readonly class="form-control"></td>
-                        <td><input type="text" name="doctor" class="form-control"></td>
-                        <td><input type="date" name="appointment" class="form-control"></td>
+                        <td><input style="width: 50px;" type="text" name="doctor" class="form-control" value="My"></td>
                     </tr>
                 </tbody>
             </table>
@@ -141,6 +149,8 @@
 
         <div class="mb-4">
             <button type="button" class="btn btn-warning" onclick="saveToFile()">Lưu vào file</button>
+            <button type="button" class="btn btn-warning" onclick="saveToFileChange()">chuyển máy mới</button>
+            <button type="button" class="btn btn-warning" onclick="saveToFileDelete()">Lưu file và xóa dữ liệu</button>
             <button type="button" class="btn btn-info" onclick="loadFromFile()">Tải dữ liệu từ file</button>
         
             <button id="exportButton" class="btn btn-danger">Thống kê Doanh thu hiện tại</button>
@@ -166,8 +176,9 @@
                     <th>Họ và tên</th>
                     <th>Số điện thoại</th>
                     <th>Địa chỉ</th>
-                    <th>Ngày sinh</th>
+                    <th>Tuổi</th>
                     <th>Ngày khám</th>
+                    <th>Ngày Hẹn</th>
                     <th>Hành động</th>
                 </tr>
             </thead>
