@@ -149,14 +149,14 @@
 
         <div class="mb-4">
             <button type="button" class="btn btn-warning" onclick="saveToFile()">Lưu vào file</button>
-            <button type="button" class="btn btn-warning" onclick="saveToFileChange()">chuyển máy mới</button>
+            <button type="button" class="btn btn-warning" onclick="saveToFileChange()">Lưu lên cloud</button>
             <button type="button" class="btn btn-warning" onclick="saveToFileDelete()">Lưu file và xóa dữ liệu</button>
             <button type="button" class="btn btn-info" onclick="loadFromFile()">Tải dữ liệu từ file</button>
-        
+            <button type="button" class="btn btn-info" onclick="handleFileUploadCloud()">Tải dữ liệu từ cloud</button>
             <button id="exportButton" class="btn btn-danger">Thống kê Doanh thu hiện tại</button>
             <button type="button" class="btn btn-danger" onclick="loadFromFileThang()">Thống kê Doanh thu Theo tháng</button>
         
-            <input type="file" id="fileInput" class="hidden" onchange="handleFileUpload(event)">
+           // <input type="file" id="fileInput" class="hidden" onchange="handleFileUpload(event)">
             <input type="file" id="fileInputThang" class="hidden" onchange="handleFileUploadThang(event)">
         </div>
 

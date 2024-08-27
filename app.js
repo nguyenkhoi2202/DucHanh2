@@ -1,6 +1,12 @@
 let records = JSON.parse(localStorage.getItem('dentalRecords')) || [];
 let editIndex = -1;
 
+function doGet(e) {
+    var file = DriveApp.getFileById('your-file-id');
+    var content = file.getBlob().getDataAsString();
+    return ContentService.createTextOutput(content);
+  }
+
 function addRow() {
     const table = document.getElementById('treatmentTableBody');
     const newRow = table.insertRow();
@@ -192,20 +198,38 @@ function saveToFile() {
 
     if(confirmation){
         const today = new Date();
-        const dataStr = JSON.stringify(records, null, 2);
-        const blob = new Blob([dataStr], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `DucHanh-${getFormattedDate()}.txt`;
-        document.body.appendChild(a);
-        if(isLastDayOfMonth(today)){
-            a.click();
-        }else{
-            alert('Chỉ ngày cuối tháng mới được lưu file nh')
+
+        function isInCurrentMonth(date) {
+            const currentMonth = today.getMonth(); // Tháng hiện tại (0 - 11)
+            const currentYear = today.getFullYear(); // Năm hiện tại
+
+            return (date.getMonth() === currentMonth && date.getFullYear() === currentYear);
         }
-       
-        document.body.removeChild(a);
+
+        const filteredRecords = records.filter(record => {
+            const recordDate = new Date(record.date);
+            return isInCurrentMonth(recordDate);
+        });
+
+        if (filteredRecords.length > 0) {
+            const dataStr = JSON.stringify(filteredRecords, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `DucHanh-${getFormattedDate()}.json`; // Thay đổi đuôi file thành .json để phản ánh định dạng dữ liệu
+            document.body.appendChild(a);
+
+            if (isLastDayOfMonth(today)) {
+                a.click();
+            } else {
+                alert('Chỉ ngày cuối tháng mới được lưu file nhé');
+            }
+
+            document.body.removeChild(a);
+        } else {
+            alert('Không có dữ liệu để lưu trong tháng hiện tại.');
+        }
 
         // localStorage.clear();
         // location.reload();
@@ -213,26 +237,37 @@ function saveToFile() {
    
 }
 function saveToFileChange(){
-    const confirmation = confirm("Bạn có chắc chắn muốn lưu dữ liệu và chuyển sang máy tính khác");
+    const confirmation = confirm("Bạn có chắc chắn muốn lưu dữ liệu lên cloud và chuyển sang máy tính khác");
 
     if(confirmation){
-        const today = new Date();
-        const dataStr = JSON.stringify(records, null, 2);
-        const blob = new Blob([dataStr], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `DucHanh-${getFormattedDate()}.txt`;
-        document.body.appendChild(a);
-        // if(isLastDayOfMonth(today)){
-        //     a.click();
-        // }else{
-        //     alert('Chỉ ngày cuối tháng mới được lưu file nh')
-        // }
-        a.click();
+        // const today = new Date();
+        // const dataStr = JSON.stringify(records, null, 2);
+        // const blob = new Blob([dataStr], { type: 'application/json' });
+        // const url = URL.createObjectURL(blob);
+        // const a = document.createElement('a');
+        // a.href = url;
+        // a.download = `DucHanh-${getFormattedDate()}.txt`;
+        // document.body.appendChild(a);
+        // // if(isLastDayOfMonth(today)){
+        // //     a.click();
+        // // }else{
+        // //     alert('Chỉ ngày cuối tháng mới được lưu file nh')
+        // // }
+        // a.click();
         
        
-        document.body.removeChild(a);
+        // document.body.removeChild(a);
+
+
+        fetch('https://script.google.com/macros/s/AKfycbzjXxdGVStI7qLNEvMXZNqipkd9MC6IUtJ66KdFY69Va-iELCrx0FUit0fhMYky-NHx/exec', {
+            method: 'POST',
+            body: JSON.stringify(records, null, 2),
+        })
+        .then(response => response.text())
+        .then(data => {
+            console.log(data); // Kết quả sau khi cập nhật file
+            alert('Lưu dữ liệu lên cơ sở dữ liệu thành công')
+        });
     }
 }
 
@@ -274,7 +309,27 @@ function loadFromFileThang(){
     document.getElementById('fileInputThang').click();
 }
 
+function handleFileUploadCloud() {
+    fetch('https://script.google.com/macros/s/AKfycbzjXxdGVStI7qLNEvMXZNqipkd9MC6IUtJ66KdFY69Va-iELCrx0FUit0fhMYky-NHx/exec')
+        .then(response => response.text())
+        .then(data => {
+            try {
+                const records = JSON.parse(data);
+                localStorage.setItem('dentalRecords', JSON.stringify(records));
+                displayRecords();
+                location.reload();
+                alert('Tải dữ liệu từ cơ sở dữ liệu thành công')
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching file:', error);
+        });
+}
+
 function handleFileUpload(event) {
+
     const file = event.target.files[0];
     const reader = new FileReader();
     reader.onload = function(e) {
@@ -372,28 +427,28 @@ function updateRemaining(input) {
 
 
 // script.js
-document.addEventListener('DOMContentLoaded', () => {
-    const showBoxButton = document.getElementById('showBoxButton');
-    const infoBox = document.getElementById('infoBox');
-    const closeButton = document.getElementById('closeButton');
+// document.addEventListener('DOMContentLoaded', () => {
+//     const showBoxButton = document.getElementById('showBoxButton');
+//     const infoBox = document.getElementById('infoBox');
+//     const closeButton = document.getElementById('closeButton');
 
-    // Hiển thị hộp thoại khi nhấp vào nút
-    showBoxButton.addEventListener('click', () => {
-        infoBox.classList.remove('hidden');
-    });
+//     // Hiển thị hộp thoại khi nhấp vào nút
+//     showBoxButton.addEventListener('click', () => {
+//         infoBox.classList.remove('hidden');
+//     });
 
-    // Ẩn hộp thoại khi nhấp vào nút đóng
-    closeButton.addEventListener('click', () => {
-        infoBox.classList.add('hidden');
-    });
+//     // Ẩn hộp thoại khi nhấp vào nút đóng
+//     closeButton.addEventListener('click', () => {
+//         infoBox.classList.add('hidden');
+//     });
 
-    // Ẩn hộp thoại khi nhấp ra ngoài hộp thoại
-    window.addEventListener('click', (event) => {
-        if (event.target === infoBox) {
-            infoBox.classList.add('hidden');
-        }
-    });
-});
+//     // Ẩn hộp thoại khi nhấp ra ngoài hộp thoại
+//     window.addEventListener('click', (event) => {
+//         if (event.target === infoBox) {
+//             infoBox.classList.add('hidden');
+//         }
+//     });
+// });
 
 
 function thongKeDoanhTheoThang(){
