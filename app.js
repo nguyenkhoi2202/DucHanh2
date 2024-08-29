@@ -62,6 +62,7 @@ document.getElementById('dentalForm').addEventListener('submit', function(event)
 
 function displayRecords() {
     const tableBody = document.getElementById('recordTableBody');
+    document.getElementById('texxt').innerHTML = records.length
     tableBody.innerHTML = '';
     records.forEach((record, index) => {
         const row = tableBody.insertRow();
@@ -73,11 +74,11 @@ function displayRecords() {
         row.insertCell(5).textContent = record.visitDate;
         row.insertCell(6).textContent = record.appointment;
         const actionCell = row.insertCell(7);
-        
         const editButton = document.createElement('button');
         editButton.textContent = 'Sửa';
         editButton.onclick = () => editRecord(index);
         actionCell.appendChild(editButton);
+       
     });
 }
 
@@ -207,7 +208,7 @@ function saveToFile() {
         }
 
         const filteredRecords = records.filter(record => {
-            const recordDate = new Date(record.date);
+            const recordDate = new Date(record.visitDate);
             return isInCurrentMonth(recordDate);
         });
 
@@ -220,11 +221,12 @@ function saveToFile() {
             a.download = `DucHanh-${getFormattedDate()}.json`; // Thay đổi đuôi file thành .json để phản ánh định dạng dữ liệu
             document.body.appendChild(a);
 
-            if (isLastDayOfMonth(today)) {
-                a.click();
-            } else {
-                alert('Chỉ ngày cuối tháng mới được lưu file nhé');
-            }
+            a.click();
+            // if (isLastDayOfMonth(today)) {
+            //     a.click();
+            // } else {
+            //     alert('Chỉ ngày cuối tháng mới được lưu file nhé');
+            // }
 
             document.body.removeChild(a);
         } else {
