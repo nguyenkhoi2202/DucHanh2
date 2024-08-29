@@ -58,6 +58,14 @@ document.getElementById('dentalForm').addEventListener('submit', function(event)
     localStorage.setItem('dentalRecords', JSON.stringify(records));
     displayRecords();
     this.reset();
+            
+    const today = new Date().toISOString().split('T')[0];
+    //document.getElementById('hamy').value = today;
+
+    document.getElementById("visitDate").value = today;
+    document.getElementById("appointment").value = today;
+    //document.getElementById("dateBang").innerHTML = today;
+
 });
 
 function displayRecords() {
@@ -470,8 +478,17 @@ document.getElementById('exportButton').addEventListener('click', () => {
     const confirmation = confirm("Bạn có chắc chắn muốn thống kê doanh thu hiện tại?");
 
     if (confirmation) {
-        const plans = records.flatMap(record => record.plan);
-        console.log(plans)
+
+        const today = new Date(); // Lấy ngày hiện tại
+        const firstOfMonth = new Date(today.getFullYear(), today.getMonth(), 1); // Lấy ngày 1 của tháng hiện tại
+
+        const plans = records.flatMap(record => 
+            record.plan.filter(plan => {
+                const planDate = new Date(plan.date); // Giả định rằng plan.date có định dạng ngày hợp lệ
+                return planDate >= firstOfMonth && planDate <= today; // Lọc các kế hoạch trong khoảng từ ngày 1 đến hiện tại
+            })
+        );
+
      
         let totalCost = 0;
         let totalPaid = 0;
@@ -498,6 +515,10 @@ document.getElementById('exportButton').addEventListener('click', () => {
 
 });
 
+function removeSearch(){
+    displayRecords();
+}
+
 document.addEventListener('DOMContentLoaded', (event) => {
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('visitDate').value = today;
@@ -506,6 +527,30 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 input.value = today;
             });
 });
+
+function updateClock() {
+    const now = new Date();
+   
+    const today = formatDateToDDMMYYYY(now)
+
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+    const timeString = `${today} ${hours}:${minutes}:${seconds}`;
+    
+    document.getElementById('clock').textContent = timeString;
+}
+
+function formatDateToDDMMYYYY(date) {
+    const day = String(date.getDate()).padStart(2, '0'); // Ngày
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Tháng (tháng bắt đầu từ 0)
+    const year = date.getFullYear(); // Năm
+
+    return `${day}-${month}-${year}`;
+}
+
+setInterval(updateClock, 1000); // Cập nhật đồng hồ mỗi giây
+updateClock(); 
 
 // Khởi tạo hiển thị ban đầu
 displayRecords();

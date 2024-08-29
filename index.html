@@ -12,6 +12,18 @@
             background-color: rgb(179, 203, 207);
             margin: 20px;
         }
+
+
+        #clock {
+            font-family: 'Arial', sans-serif;
+            font-size: 48px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+        }
+
+
+        
         .hidden {
             display: none;
         }
@@ -61,7 +73,11 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="my-4">Nha Khoa Đức Hạnh</h1>
+        <div style="display: flex;justify-content: space-between;align-items: center;">
+             <h1 class="my-4">Nha Khoa Đức Hạnh</h1>
+        <h2 id="clock">sdd</h2>
+        </div>
+       
         <div id="searchSection" class="mb-4" style="margin-right: 50px;">
             <button type="button" hidden class="btn btn-primary" onclick="addNew()">Thêm Bệnh nhân</button>
         </div>
@@ -77,6 +93,11 @@
                 <label for="searchPhone" class="form-label">Kiểm tra lịch hẹn:</label>
                 <input type="date" id="lichhen" name="dob" class="form-control" oninput="searchLichHen()">
             </div>
+            <div id="searchSection" style="margin-top: 30px; margin-left: 30px;" class="mb-4">
+                <button  class="btn btn-success" onclick="removeSearch()">Bỏ search</button>
+            </div>
+
+           
         </div>
 
        
@@ -134,30 +155,30 @@
                 </thead>
                 <tbody id="treatmentTableBody">
                     <tr>
-                        <td><input style="width: 130px;" type="date" name="date" class="form-control"></td>
+                        <td><input style="width: 130px;" type="date" id="dateBang" name="date" class="form-control"></td>
                         <td><input type="text" name="tooth" class="form-control"></td>
                         <td><input style="width: 500px;" name="treatment" class="form-control"></td>
                         <td><input type="number" name="cost" class="form-control"></td>
                         <td><input type="number" name="paid" class="form-control"></td>
                         <td><input type="number" name="remaining"  readonly class="form-control"></td>
-                        <td><input style="width: 50px;" type="text" name="doctor" class="form-control" value="My"></td>
+                        <td><input style="width: 50px;" type="text" id="hamy" name="doctor" class="form-control" value="My"></td>
                     </tr>
                 </tbody>
             </table>
             <button type="button" class="btn btn-primary" onclick="addRow()">Thêm dòng</button>
             <button type="submit" class="btn btn-success">Lưu</button>
             <button type="button" class="btn btn-danger hidden" onclick="deleteRecord()" id="deleteButton">Xóa</button>
+            <label for="exampleTextField" style="font-size: 50px; color: red; font-weight: bold;" id="texxt"  class="form-label">Example Text Field</label>
         </form>
 
         <div class="mb-4">
-            <button type="button" class="btn btn-warning" onclick="saveToFile()">Lưu vào file</button>
-            <button type="button" class="btn btn-warning" onclick="saveToFileChange()">Lưu lên cloud</button>
-            <button type="button" class="btn btn-warning" onclick="saveToFileDelete()">Lưu file và xóa dữ liệu</button>
-            <button type="button" class="btn btn-info" onclick="loadFromFile()">Tải dữ liệu từ file</button>
-            <button type="button" class="btn btn-info" onclick="handleFileUploadCloud()">Tải dữ liệu từ cloud</button>
-            <button id="exportButton" class="btn btn-danger">Thống kê Doanh thu hiện tại</button>
-            <button type="button" class="btn btn-danger" onclick="loadFromFileThang()">Thống kê Doanh thu Theo tháng</button>
-            <label for="exampleTextField" style="font-size: 50px;" id="texxt"  class="form-label">Example Text Field</label>
+            <button type="button" style="background-color: rgb(124, 120, 241); border-radius: 10px;" onclick="saveToFile()">Kết sổ cuối tháng</button>
+            <button type="button" style="background-color: rgb(229, 244, 142); border-radius: 10px;" onclick="saveToFileChange()">Lưu lên cloud</button>
+            <button type="button" style="background-color: rgb(136, 241, 120); border-radius: 10px;" onclick="handleFileUploadCloud()">Tải dữ liệu từ cloud</button>
+            <button type="button" style="background-color: rgb(240, 88, 88); border-radius: 10px;" onclick="saveToFileDelete()">Lưu và xóa dữ liệu</button>
+            <button type="button" style="background-color: rgb(85, 245, 232); border-radius: 10px;" onclick="loadFromFile()">Tải dữ liệu file</button>
+            <button id="exportButton" style="background-color: rgb(242, 98, 225); border-radius: 10px;">Thống kê Doanh thu hiện tại</button>
+            <button type="button" style="background-color: rgb(100, 107, 244); border-radius: 10px;" onclick="loadFromFileThang()">Thống kê Doanh thu Theo tháng</button>
     
         
             <input type="file" id="fileInput" class="hidden" onchange="handleFileUpload(event)">
