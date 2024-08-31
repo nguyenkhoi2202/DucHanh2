@@ -115,10 +115,49 @@
 }
 
 
+/*css popup */
+/* CSS cho modal */
+.modal {
+    display: block; /* Hiển thị popup khi trang load */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 300px;
+    text-align: center;
+}
+
+
+
     
     </style>
 </head>
 <body>
+
+     <!-- Popup/Modal cho mật khẩu
+     <div id="passwordPopup" class="modal">
+        <div class="modal-content">
+            <h3>Vui lòng đăng nhập</h3>
+            <input type="text" id="usernameInput" placeholder="UserName">
+            <input type="password" id="passwordInput" placeholder="Password">
+            <button onclick="checkPassword()">Submit</button>
+            <p id="error" style="color: red; display: none;">Mật khẩu hoặc tên đăng nhập sai</p>
+        </div>
+    </div> -->
+
+
+
     <div class="container">
         <div style="display: flex;justify-content: space-between;align-items: center;">
              <h1 class="my-4">Nha Khoa Đức Hạnh Bình Thuận</h1>

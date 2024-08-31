@@ -595,6 +595,27 @@ function uploadCloudData() {
     });
 }
 
+function checkPassword() {
+    const username = document.getElementById('usernameInput').value;
+    const password = document.getElementById('passwordInput').value;
+    const correctUsername = 'duchanh';
+    const correctPassword = '123'; 
+
+    if (password === correctPassword && username === correctUsername) {
+        document.getElementById('passwordPopup').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+    } else {
+        document.getElementById('error').style.display = 'block';
+    }
+}
+
+// Ngăn người dùng truy cập trang nếu không nhập mật khẩu đúng
+window.onload = function() {
+    document.getElementById('passwordPopup').style.display = 'block';
+    document.getElementById('content').style.display = 'none';
+};
+
+
 
 
 
