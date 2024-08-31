@@ -54,13 +54,14 @@ document.getElementById('dentalForm').addEventListener('submit', function(event)
         jsonData.plan.push(planItem);
     });
 
+
     if (editIndex > -1) {
         records[editIndex] = jsonData;
         editIndex = -1;
     } else {
         records.push(jsonData);
     }
-
+    alert(`Lưu dữ liệu với tên ${jsonData.name} thành công`)
 
     localStorage.setItem('dentalRecords', JSON.stringify(records));
     displayRecords();
