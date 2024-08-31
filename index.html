@@ -13,6 +13,13 @@
             margin: 20px;
         }
 
+        .cp-text{
+             color: rgba(0,0,0,.7); 
+             font-size: 30px;
+             text-shadow: 0 1px rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
 
         #clock {
             font-family: 'Arial', sans-serif;
@@ -68,16 +75,74 @@
             display: block;
         }
 
+
+
+        /* CSS cho modal */
+.modal {
+    display: none; /* Ẩn theo mặc định */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 150px; /* Có thể thay đổi kích thước */
+    text-align: center;
+}
+
+/* CSS cho spinner */
+.spinner {
+    border: 4px solid #f3f3f3; /* Light grey */
+    border-top: 4px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
     
     </style>
 </head>
 <body>
     <div class="container">
         <div style="display: flex;justify-content: space-between;align-items: center;">
-             <h1 class="my-4">Nha Khoa Đức Hạnh</h1>
-        <h2 id="clock">sdd</h2>
+             <h1 class="my-4">Nha Khoa Đức Hạnh Bình Thuận</h1>
+        <h2 id="clock">time</h2>
         </div>
-       
+        <div>
+            <p style="font-size: 20px; font-weight: bold;">
+                Phone: 0947 137 139 (Đức Hạnh)  or 0888 974 974 (Hà My)
+
+            </p>
+        </div>
+        
+
+<!-- Popup/Modal cho loading -->
+<div id="loadingPopup" class="modal" style="display: none;">
+    <div class="modal-content">
+        <!-- Spinner sẽ hiển thị ở đây khi loading -->
+        <div id="loadingSpinner" class="spinner" style="margin: 20px auto;"></div>
+        <p style="text-align: center;">Đang tải</p>
+    </div>
+</div>
+
+
+
         <div id="searchSection" class="mb-4" style="margin-right: 50px;">
             <button type="button" hidden class="btn btn-primary" onclick="addNew()">Thêm Bệnh nhân</button>
         </div>
@@ -155,13 +220,13 @@
                 </thead>
                 <tbody id="treatmentTableBody">
                     <tr>
-                        <td><input style="width: 130px;" type="date" id="dateBang" name="date" class="form-control"></td>
+                        <td><input style="width: 130px;" type="date" name="date" class="form-control"></td>
                         <td><input type="text" name="tooth" class="form-control"></td>
                         <td><input style="width: 500px;" name="treatment" class="form-control"></td>
                         <td><input type="number" name="cost" class="form-control"></td>
                         <td><input type="number" name="paid" class="form-control"></td>
                         <td><input type="number" name="remaining"  readonly class="form-control"></td>
-                        <td><input style="width: 50px;" type="text" id="hamy" name="doctor" class="form-control" value="My"></td>
+                        <td><input style="width: 50px;" type="text" name="doctor" class="form-control" value="My"></td>
                     </tr>
                 </tbody>
             </table>
@@ -173,8 +238,8 @@
 
         <div class="mb-4">
             <button type="button" style="background-color: rgb(124, 120, 241); border-radius: 10px;" onclick="saveToFile()">Kết sổ cuối tháng</button>
-            <button type="button" style="background-color: rgb(229, 244, 142); border-radius: 10px;" onclick="saveToFileChange()">Lưu lên cloud</button>
-            <button type="button" style="background-color: rgb(136, 241, 120); border-radius: 10px;" onclick="handleFileUploadCloud()">Tải dữ liệu từ cloud</button>
+            <button type="button" style="background-color: rgb(229, 244, 142); border-radius: 10px;" onclick="uploadCloudData()">Lưu lên cloud</button>
+            <button type="button" style="background-color: rgb(136, 241, 120); border-radius: 10px;" onclick="dowloadCloudData()">Tải dữ liệu từ cloud</button>
             <button type="button" style="background-color: rgb(240, 88, 88); border-radius: 10px;" onclick="saveToFileDelete()">Lưu và xóa dữ liệu</button>
             <button type="button" style="background-color: rgb(85, 245, 232); border-radius: 10px;" onclick="loadFromFile()">Tải dữ liệu file</button>
             <button id="exportButton" style="background-color: rgb(242, 98, 225); border-radius: 10px;">Thống kê Doanh thu hiện tại</button>
@@ -212,6 +277,10 @@
             </tbody>
         </table>
     </div>
+
+    <p class="cp-text">
+        © Copyright 2024 <a href="https://facebook.com/nguyenkhoi2202">KhoiTN</a>. Bản quyền thuộc  về <a href="https://facebook.com/nguyenkhoi2202">KhoiTN</a>.
+    </p>
 
     <script src="app.js"></script>
     <!-- Bootstrap JS -->

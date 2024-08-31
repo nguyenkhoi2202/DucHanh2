@@ -11,12 +11,19 @@ function addRow() {
     const table = document.getElementById('treatmentTableBody');
     const newRow = table.insertRow();
 
-    const cols = ['date', 'tooth', 'treatment', 'cost', 'paid', 'remaining', 'doctor', 'appointment'];
+    const cols = ['date', 'tooth', 'treatment', 'cost', 'paid', 'remaining', 'doctor'];
     cols.forEach(col => {
         const cell = newRow.insertCell();
         const input = document.createElement('input');
-        input.type = (col === 'date' || col === 'appointment') ? 'date' : (col === 'cost' || col === 'paid' || col === 'remaining') ? 'number' : 'text';
+        input.type = (col === 'date') ? 'date' : 
+        (col === 'cost' || col === 'paid' || col === 'remaining') ? 'number' : 'text';
         input.name = col;
+        if (col === 'doctor') {
+            input.value = 'My';
+        }
+        if (col === 'remaining') {
+            input.readOnly = true;
+        }
         cell.appendChild(input);
     });
 }
@@ -277,6 +284,7 @@ function saveToFileChange(){
         .then(data => {
             console.log(data); // Kết quả sau khi cập nhật file
             alert('Lưu dữ liệu lên cơ sở dữ liệu thành công')
+            location.reload();
         });
     }
 }
@@ -548,9 +556,47 @@ function formatDateToDDMMYYYY(date) {
 
     return `${day}-${month}-${year}`;
 }
+function formatDateToDDMMYYYYNew(date) {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Tháng trong JavaScript bắt đầu từ 0
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+}
 
 setInterval(updateClock, 1000); // Cập nhật đồng hồ mỗi giây
 updateClock(); 
+
+
+
+function dowloadCloudData() {
+    // Hiển thị popup loading
+    const loadingPopup = document.getElementById('loadingPopup');
+    loadingPopup.style.display = 'block';
+
+    // Gọi hàm xử lý công việc
+    handleFileUploadCloud().then(() => {
+        // Tắt popup loading
+        loadingPopup.style.display = 'none';
+        // Hiển thị thông báo thành công
+        alert('Tải dữ liệu từ cơ sở dữ liệu thành công')
+    });
+}
+
+function uploadCloudData() {
+    // Hiển thị popup loading
+    const loadingPopup = document.getElementById('loadingPopup');
+    loadingPopup.style.display = 'block';
+
+    // Gọi hàm xử lý công việc
+    saveToFileChange().then(() => {
+        // Tắt popup loading
+        loadingPopup.style.display = 'none';
+        // Hiển thị thông báo thành công
+    });
+}
+
+
+
 
 // Khởi tạo hiển thị ban đầu
 displayRecords();
