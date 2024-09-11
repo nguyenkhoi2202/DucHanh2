@@ -142,6 +142,30 @@ function addNew(){
    location.reload();
 }
 
+function searchOneDay(){
+    const lichhen = document.getElementById('onedaySearch').value;
+    let filteredRecords = records.filter(record => record.visitDate.toLowerCase().includes(lichhen));
+
+
+    const tableBody = document.getElementById('recordTableBody');
+    tableBody.innerHTML = '';
+    filteredRecords.forEach((record, index) => {
+        const row = tableBody.insertRow();
+        row.insertCell(0).textContent = index + 1;
+        row.insertCell(1).textContent = record.name;
+        row.insertCell(2).textContent = record.phone;
+        row.insertCell(3).textContent = record.address;
+        row.insertCell(4).textContent = record.dob;
+        row.insertCell(5).textContent = record.visitDate;
+        row.insertCell(6).textContent = record.appointment;
+        const actionCell = row.insertCell(7);
+        const editButton = document.createElement('button');
+        editButton.textContent = 'Sửa';
+        editButton.onclick = () => editRecord(records.indexOf(record));
+        actionCell.appendChild(editButton);
+    });
+}
+
 function searchLichHen(){
     const lichhen = document.getElementById('lichhen').value;
     let filteredRecords = records.filter(record => record.appointment.toLowerCase().includes(lichhen));
@@ -556,7 +580,10 @@ updateClock();
 
 
 function dowloadCloudData() {
-    // Hiển thị popup loading
+    const confirmation = confirm("Bạn có chắc chắn muốn tải dữ liệu từ cloud về không?");
+
+    if(confirmation){
+          // Hiển thị popup loading
     const loadingPopup = document.getElementById('loadingPopup');
     loadingPopup.style.display = 'block';
 
@@ -567,6 +594,9 @@ function dowloadCloudData() {
         // Hiển thị thông báo thành công
         alert('Tải dữ liệu từ cơ sở dữ liệu thành công')
     });
+
+    }
+  
 }
 
 function uploadCloudData() {
