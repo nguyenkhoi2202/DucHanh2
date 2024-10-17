@@ -297,6 +297,8 @@ function saveToFileChange(){
             alert('Lưu dữ liệu lên cơ sở dữ liệu thành công')
             location.reload();
         });
+    }else{
+        loadingPopup.style.display = 'none';
     }
 }
 
@@ -599,17 +601,26 @@ function dowloadCloudData() {
   
 }
 
-function uploadCloudData() {
-    // Hiển thị popup loading
-    const loadingPopup = document.getElementById('loadingPopup');
-    loadingPopup.style.display = 'block';
+async function uploadCloudData() {
+    const pass = document.getElementById('passCloud').value;
+    const passHash = await generateSHA256(pass);
+    console.log(passHash);
 
-    // Gọi hàm xử lý công việc
-    saveToFileChange().then(() => {
-        // Tắt popup loading
-        loadingPopup.style.display = 'none';
-        // Hiển thị thông báo thành công
-    });
+        // Kiểm tra mật khẩu trước
+    if (passHash === '991a3defd73e481618e9cd44694d9181b8cebc5b3842b28fafec24f89ea63a18') {
+        // Hiển thị popup loading
+        const loadingPopup = document.getElementById('loadingPopup');
+        loadingPopup.style.display = 'block';
+
+        // Gọi hàm xử lý công việc
+        saveToFileChange().then(() => {
+            // Tắt popup loading
+            loadingPopup.style.display = 'none';
+            // Hiển thị thông báo thành công
+        });
+    }else {
+        alert('Mật khẩu không chính xác');
+    }
 }
 
 function checkPassword() {
@@ -632,6 +643,14 @@ window.onload = function() {
     document.getElementById('content').style.display = 'none';
 };
 
+async function generateSHA256(value) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(value);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
+}
 
 
 
