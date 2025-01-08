@@ -681,6 +681,17 @@ async function generateSHA256(value) {
 }
 
 
+$(document).ready(function() {
+    $('#table2').DataTable({
+        paging: true, // Phân trang
+        searching: false, // Tắt tính năng tìm kiếm nếu không cần
+        ordering: true, // Kích hoạt sắp xếp
+        info: false, // Tắt thông tin số lượng
+        pageLength: 7, // Số dòng trên mỗi trang
+    });
+});
+
+
 
 
 // Khởi tạo hiển thị ban đầu
