@@ -99,6 +99,10 @@ function displayRecords() {
 }
 
 function editRecord(index) {
+    let totalCost = 0;
+    let totalPaid = 0;
+    let totalRemaining = 0;
+
     editIndex = index;
     const record = records[index];
 
@@ -112,6 +116,10 @@ function editRecord(index) {
     const tableBody = document.getElementById('treatmentTableBody');
     tableBody.innerHTML = '';
     record.plan.forEach(planItem => {
+        if (planItem.cost) totalCost += parseFloat(planItem.cost);
+        if (planItem.paid) totalPaid += parseFloat(planItem.paid);
+        if (planItem.remaining) totalRemaining += parseFloat(planItem.remaining);
+
         const newRow = tableBody.insertRow();
         const cols = ['date', 'tooth', 'treatment', 'cost', 'paid', 'remaining', 'doctor'];
         cols.forEach(col => {
@@ -123,6 +131,10 @@ function editRecord(index) {
             cell.appendChild(input);
         });
     });
+
+    document.getElementById('totalCost1').value = totalCost;
+    document.getElementById('totalPaid1').value = totalPaid;
+    document.getElementById('totalRemaining1').value = totalRemaining;
 
     document.getElementById('deleteButton').classList.remove('hidden');
 }
@@ -690,6 +702,36 @@ $(document).ready(function() {
         pageLength: 7, // Số dòng trên mỗi trang
     });
 });
+
+document.querySelector("#treatmentTableBody").addEventListener("input", (e) => {
+    if (e.target.name === "cost" || e.target.name === "paid" || e.target.name === "remaining") {
+        updateTotals();
+    }
+});
+
+
+function updateTotals() {
+    // Lấy danh sách các hàng trong bảng
+    const rows = document.querySelectorAll("#treatmentTableBody tr");
+
+    // Khởi tạo tổng
+    let totalCost1 = 0; // Tổng tiền
+    let totalPaid1 = 0; // Tổng trả
+
+    // Duyệt qua từng hàng để cộng các giá trị
+    rows.forEach(row => {
+        const cost = parseFloat(row.querySelector('input[name="cost"]').value) || 0;
+        const paid = parseFloat(row.querySelector('input[name="paid"]').value) || 0;
+
+        totalCost1 += cost;
+        totalPaid1 += paid;
+    });
+
+    // Cập nhật giá trị vào ô tổng
+    document.querySelector('#totalCost1').value = totalCost1;
+    document.querySelector('#totalPaid1').value = totalPaid1;
+    document.querySelector('#totalRemaining1').value = totalCost1 - totalPaid1;
+}
 
 
 

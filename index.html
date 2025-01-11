@@ -12,6 +12,8 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Thêm DataTables -->
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
 
     <style>
         body {
@@ -145,7 +147,20 @@
     text-align: center;
 }
 
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: #f2f2f2;
+}
 
+.table-bordered th {
+  background-color: #007bff;
+  color: white;
+  text-align: center;
+}
+
+#totalCost1, #totalPaid1, #totalRemaining1 {
+  background-color: #dff9fb;
+  font-weight: bold;
+}
 
     
     </style>
@@ -163,19 +178,15 @@
         </div>
     </div> -->
 
+    <div class="header">
+            <div style="display: flex; justify-content: center; align-items: center; background-color: #ADD3F8;">
+                <h2 class="card-title" style="margin: 0; font-size: 64px; font-weight: bold; color: #333; margin-right: 30px;">Nha Khoa Đức Hạnh Bình Thuận  </h2>
+                <h2 id="clock" style="margin: 0;  margin-right: 30px; font-size:34px; font-weight: bold; color: #007bff;">time</h2>  <br/>
+                <i class="bi bi-telephone-fill"></i> 0947 137 139 (Đức Hạnh) 
+                <i class="bi bi-telephone-fill"></i> 0888 974 974 (Hà My)
+            </div>              
 
-
-    <div class="container">
-        <div style="display: flex;justify-content: space-between;align-items: center;">
-             <h1 class="my-4">Nha Khoa Đức Hạnh Bình Thuận</h1>
-        <h2 id="clock">time</h2>
-        </div>
-        <div>
-            <p style="font-size: 20px; font-weight: bold;">
-                Phone: 0947 137 139 (Đức Hạnh)  or 0888 974 974 (Hà My)
-
-            </p>
-        </div>
+      </div>
         
 
 <!-- Popup/Modal cho loading -->
@@ -187,79 +198,80 @@
     </div>
 </div>
 
+    <div class="payload">
 
 
-        <div id="searchSection" class="mb-4" style="display: flex;">
-            <button type="button"  class="btn btn-primary" onclick="addNew()">Thêm Bệnh nhân</button>
-            <button type="button" style="background-color: rgb(136, 241, 120); border-radius: 10px;" onclick="dowloadCloudData()">Tải dữ liệu từ cloud</button>
-            <input type="password" id="passCloud" placeholder="Nhập mật khẩu" >
-        </div>
 
-        <div class="flexdata" style="justify-content: center;" >
-
-            <div id="searchSection" class="mb-4" style="margin-right: 50px;">
-                <label for="searchPhone" class="form-label">Tìm kiếm theo số điện thoại:</label>
-                <input type="text" id="searchPhone" class="form-control" oninput="searchRecords()">
-            </div>
-
-            <div id="searchSection" class="mb-4">
-                <label for="searchPhone" class="form-label">Kiểm tra lịch hẹn:</label>
-                <input type="date" id="lichhen" name="dob" class="form-control" oninput="searchLichHen()">
-            </div>
-
-            <div id="searchSection" class="mb-4">
-                <label for="searchPhone" class="form-label">Bệnh nhân trong ngày:</label>
-                <input type="date" id="onedaySearch" name="dob" class="form-control" oninput="searchOneDay()">
-            </div>
-            <div id="searchSection" style="margin-top: 30px; margin-left: 30px;" class="mb-4">
-                <button  class="btn btn-success" onclick="removeSearch()">Bỏ search</button>
-            </div>
-            <div id="searchSection" style="margin-top: 30px; margin-left: 30px;" class="mb-4">
-                <button  class="btn btn-success" onclick="filterDebt()">Kiểm tra người còn nợ</button>
-            </div>
-
-           
+        <div class="flexdata" style='margin: 20px; margin-top: 10px;'>
+            <p class="card-text" style='margin: 30px; margin-top: 10px;'>
+                <div id="searchSection" class="mb-4 d-flex flex-wrap justify-content-between align-items-center">
+                    <button type="button"  class="btn btn-primary" onclick="addNew()">Thêm Bệnh nhân</button>
+                    <button type="button" style="background-color: rgb(229, 244, 142); border-radius: 10px;" onclick="uploadCloudData()">Lưu lên cloud</button>
+                    <input type="password" id="passCloud" placeholder="Nhập mật khẩu" >
+                </div>
+    
+                <div id="searchSection" class="col-mb-4" style="margin-right: 30px;">
+                    <label for="searchPhone" class="form-label">Tìm kiếm theo số điện thoại:</label>
+                    <input type="text" id="searchPhone" class="form-control" oninput="searchRecords()">
+                </div>
+    
+                <div id="searchSection" class="col-mb-4">
+                    <label for="searchPhone" class="form-label">Kiểm tra lịch hẹn:</label>
+                    <input type="date" id="lichhen" name="dob" class="form-control" oninput="searchLichHen()">
+                </div>
+    
+                <div id="searchSection" class="col-mb-4">
+                    <label for="searchPhone" class="form-label">Bệnh nhân trong ngày:</label>
+                    <input type="date" id="onedaySearch" name="dob" class="form-control" oninput="searchOneDay()">
+                </div>
+                <div id="searchSection" style="margin-top: 30px; margin-left: 30px;" class="col-mb-4">
+                    <button  class="btn btn-success" onclick="removeSearch()">Bỏ search</button>
+                </div>
+                <div id="searchSection" style="margin-top: 30px; margin-left: 30px;" class="col-mb-4">
+                    <button  class="btn btn-success" onclick="filterDebt()">Kiểm tra người còn nợ</button>
+                </div>
+            </p>
         </div>
 
        
 
-        <form id="dentalForm" class="mb-4">
+        <form id="dentalForm" class="col-mb-4">
             <input type="hidden" id="recordId">
 
-            <div class="flexdata">
-                 <div class="mb-3" style="margin-right: 50px;">
+            <div class="flexdata" style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; padding: 10px; background-color: #d0e4f7; border-radius: 8px;">
+                 <div class="col-mb-3" style="margin-right: 30px;">
                     <label for="name" class="form-label">Họ và tên:</label>
                     <input type="text" id="name" name="name" class="form-control" required>
                 </div>
 
-                <div class="mb-3" style="margin-right: 50px;">
+                <div class="col-mb-3" style="margin-right: 30px;">
                     <label for="phone" class="form-label">Số điện thoại:</label>
                     <input type="text" id="phone" name="phone" class="form-control" required>
                 </div>
 
-                <div class="mb-3" style="margin-right: 50px;">
+                <div class="col-mb-3" style="margin-right: 30px;">
                     <label for="dob" class="form-label">Tuổi:</label>
                     <input type="text" id="dob" name="dob" class="form-control" required>
                 </div>
     
-                <div class="mb-3" style="margin-right: 50px;">
+                <div class="col-mb-3" style="margin-right: 30px;">
                     <label for="visitDate" class="form-label">Ngày khám:</label>
                     <input type="date" id="visitDate" name="visitDate" class="form-control" required>
                 </div>
-                <div class="mb-3">
+                <div class="col-mb-3" style="margin-right: 30px;">
                     <label for="appointmentDate" class="form-label">Ngày hẹn:</label>
                     <td><input type="date" id="appointment" name="appointment" class="form-control"></td>
                 </div>
                
-
+                <div class="col-mb-3" style="width: 350px;">
+                    <label for="address" class="form-label">Địa chỉ:</label>
+                    <input type="text" id="address" name="address" style="width: 350px;"  class="form-control" required>
+                </div>
                 
             </div>
            
 
-            <div class="mb-3">
-                <label for="address" class="form-label">Địa chỉ:</label>
-                <input type="text" id="address" name="address" class="form-control" required>
-            </div>
+           
             
 
             <table id="table1" class="table table-bordered">
@@ -285,17 +297,25 @@
                         <td><input style="width: 50px;" type="text" name="doctor" class="form-control" value="My"></td>
                     </tr>
                 </tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><input style="background-color: rgb(167, 228, 234);" readonly id="totalCost1">Tổng tiền</input></td>
+                    <td><input style="background-color: rgb(167, 228, 234);" readonly id="totalPaid1">Tổng Trả</input></td>
+                    <td><input style="background-color: rgb(167, 228, 234);" readonly id="totalRemaining1">Tổng còn</input></td>
+                    <td></td>
+                </tr>
             </table>
-            <button type="button" class="btn btn-primary" onclick="addRow()">Thêm dòng</button>
-            <button type="submit" class="btn btn-success">Lưu</button>
-            <button type="button" class="btn btn-danger hidden" onclick="deleteRecord()" id="deleteButton">Xóa</button>
+            <button type="button" class="btn btn-primary btn-lg me-2" onclick="addRow()">Thêm dòng</button>
+            <button type="submit" class="btn btn-success btn-lg me-2">Lưu</button>
+            <button type="button" class="btn btn-danger btn-lg hidden" onclick="deleteRecord()" id="deleteButton">Xóa</button>
             <label for="exampleTextField" style="font-size: 50px; color: red; font-weight: bold;" id="texxt"  class="form-label">Example Text Field</label>
         </form>
 
         <div class="mb-4">
             <button type="button" style="background-color: rgb(124, 120, 241); border-radius: 10px;" onclick="saveToFile()">Kết sổ cuối tháng</button>
-            <button type="button" style="background-color: rgb(229, 244, 142); border-radius: 10px;" onclick="uploadCloudData()">Lưu lên cloud</button>
-            
+            <button type="button" style="background-color: rgb(136, 241, 120); border-radius: 10px;" onclick="dowloadCloudData()">Tải dữ liệu từ cloud</button>
             <button type="button" style="background-color: rgb(240, 88, 88); border-radius: 10px;" onclick="saveToFileDelete()">Lưu và xóa dữ liệu</button>
             <button type="button" style="background-color: rgb(85, 245, 232); border-radius: 10px;" onclick="loadFromFile()">Tải dữ liệu file</button>
             <button id="exportButton" style="background-color: rgb(242, 98, 225); border-radius: 10px;">Thống kê Doanh thu hiện tại</button>
@@ -334,9 +354,14 @@
         </table>
     </div>
 
-    <p class="cp-text">
-        © Copyright 2024 <a href="https://facebook.com/nguyenkhoi2202">KhoiTN</a>. Bản quyền thuộc  về <a href="https://facebook.com/nguyenkhoi2202">KhoiTN</a>.
-    </p>
+    </div>
+
+    <div class="footer">
+        <p class="cp-text">
+            © Copyright 2024 <a href="https://facebook.com/nguyenkhoi2202">KhoiTN</a>. Bản quyền thuộc  về <a href="https://facebook.com/nguyenkhoi2202">KhoiTN</a>.
+        </p>
+    </div>
+    
 
     <script src="app.js"></script>
     <!-- Bootstrap JS -->
