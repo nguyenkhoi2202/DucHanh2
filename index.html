@@ -7,12 +7,14 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Thêm CSS -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-<!-- Thêm jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Thêm DataTables -->
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <!-- Thêm jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Thêm DataTables -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
 
     <style>
@@ -160,6 +162,40 @@
 #totalCost1, #totalPaid1, #totalRemaining1 {
   background-color: #dff9fb;
   font-weight: bold;
+}
+
+
+.popup {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);         
+}
+.popup-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    width: 400px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    color: #333;
 }
 
     
@@ -313,6 +349,15 @@
             <label for="exampleTextField" style="font-size: 50px; color: red; font-weight: bold;" id="texxt"  class="form-label">Example Text Field</label>
         </form>
 
+        <div id="qrPopup" class="popup">
+            <div class="popup-content">
+                <span class="close-btn" onclick="closePopup()">&times;</span>
+                <h2>Nha Khoa Duc Hanh</h2>
+                <img id="qrImage" style="border: 1px solid #ccc; max-width: 300px;" />
+            </div>
+        </div>
+
+
         <div class="mb-4">
             <button type="button" style="background-color: rgb(124, 120, 241); border-radius: 10px;" onclick="saveToFile()">Kết sổ cuối tháng</button>
             <button type="button" style="background-color: rgb(136, 241, 120); border-radius: 10px;" onclick="dowloadCloudData()">Tải dữ liệu từ cloud</button>
@@ -320,6 +365,9 @@
             <button type="button" style="background-color: rgb(85, 245, 232); border-radius: 10px;" onclick="loadFromFile()">Tải dữ liệu file</button>
             <button id="exportButton" style="background-color: rgb(242, 98, 225); border-radius: 10px;">Thống kê Doanh thu hiện tại</button>
             <button type="button" style="background-color: rgb(100, 107, 244); border-radius: 10px;" onclick="loadFromFileThang()">Thống kê Doanh thu Theo tháng</button>
+            <button onclick="generateVietQR()">Tạo mã QR</button>
+            <input style="background-color: rgb(167, 228, 234);" id="moneyGenQR"></input>
+        
     
         
             <input type="file" id="fileInput" class="hidden" onchange="handleFileUpload(event)">

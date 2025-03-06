@@ -678,10 +678,10 @@ function checkPassword() {
 }
 
 // Ngăn người dùng truy cập trang nếu không nhập mật khẩu đúng
-window.onload = function() {
-    document.getElementById('passwordPopup').style.display = 'block';
-    document.getElementById('content').style.display = 'none';
-};
+// window.onload = function() {
+//     document.getElementById('passwordPopup').style.display = 'block';
+//     document.getElementById('content').style.display = 'none';
+// };
 
 async function generateSHA256(value) {
     const encoder = new TextEncoder();
@@ -731,6 +731,51 @@ function updateTotals() {
     document.querySelector('#totalCost1').value = totalCost1;
     document.querySelector('#totalPaid1').value = totalPaid1;
     document.querySelector('#totalRemaining1').value = totalCost1 - totalPaid1;
+}
+
+
+//----------------------------------------------------
+
+
+function generateVietQR() {
+    const now = new Date();
+   
+    const today = formatDateToDDMMYYYYNew(now)
+
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+    const timeString = `${today} ${hours}h:${minutes}`;
+
+    const data = {
+            accountNo: 5457397979,
+            accountName: "TRAN NGUYEN KHOI",
+            acqId: 970407,
+            amount: document.getElementById('moneyGenQR').value + '000',
+            addInfo: document.getElementById('name').value + " Thanh toan nha khoa ngay " + timeString,
+            format: "text",
+            template: "compact"
+    };
+
+    axios.post('https://api.vietqr.io/v2/generate', data)
+    .then(response => {
+        const qrRaw = response.data.data.qrDataURL;
+
+        if (qrRaw) {
+            document.getElementById('qrImage').src = qrRaw;
+            document.getElementById('qrPopup').style.display = 'block';
+
+        } else {
+            alert("Không tìm thấy dữ liệu mã QR!");
+        }
+    })
+    .catch(error => {
+        console.error('Lỗi khi gọi API:', error);
+        alert("Có lỗi xảy ra khi gọi API!");
+    });
+}
+function closePopup() {
+    document.getElementById('qrPopup').style.display = 'none';
 }
 
 
