@@ -748,9 +748,9 @@ function generateVietQR() {
     const timeString = `${today} ${hours}h:${minutes}`;
 
     const data = {
-            accountNo: 19026969647011,
+            accountNo: 888974974,
             accountName: "TRAN THI HA MY",
-            acqId: 970407,
+            acqId: 970441,
             amount: document.getElementById('moneyGenQR').value + '000',
             addInfo: document.getElementById('name').value + " Thanh toan nha khoa ngay " + timeString,
             format: "text",
