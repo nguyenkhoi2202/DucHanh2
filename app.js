@@ -747,11 +747,14 @@ function generateVietQR() {
     const seconds = now.getSeconds().toString().padStart(2, '0');
     const timeString = `${today} ${hours}h:${minutes}`;
 
+    const moneyInput = document.getElementById('moneyGenQR');
+    const moneyValue = moneyInput ? moneyInput.value.trim() + '000' : '';
+
     const data = {
             accountNo: 888974974,
             accountName: "TRAN THI HA MY",
             acqId: 970441,
-            amount:  document.getElementById('moneyGenQR').value ? document.getElementById('moneyGenQR').value + '000' : '',
+            amount:   moneyValue,
             addInfo: document.getElementById('name').value + " Thanh toan nha khoa ngay " + timeString,
             format: "text",
             template: "compact"
