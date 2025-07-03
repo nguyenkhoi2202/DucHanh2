@@ -748,13 +748,13 @@ function generateVietQR() {
     const timeString = `${today} ${hours}h:${minutes}`;
 
     const moneyInput = document.getElementById('moneyGenQR');
-    const moneyValue = moneyInput ? moneyInput.value.trim() + '000' : '';
+    const amountMoney = moneyValue ? (parseInt(moneyValue, 10) * 1000).toString() : '';
 
     const data = {
             accountNo: 888974974,
             accountName: "TRAN THI HA MY",
             acqId: 970441,
-            amount:   moneyValue,
+            amount:   amountMoney,
             addInfo: document.getElementById('name').value + " Thanh toan nha khoa ngay " + timeString,
             format: "text",
             template: "compact"
