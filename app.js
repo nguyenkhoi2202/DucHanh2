@@ -748,7 +748,6 @@ function generateVietQR() {
     const timeString = `${today} ${hours}h:${minutes}`;
 
     const moneyInput = document.getElementById('moneyGenQR');
-
     const moneyValue = moneyInput ? moneyInput.value.trim() : '';
     const amountMoney = moneyValue ? (parseInt(moneyValue, 10) * 1000).toString() : '';
 
