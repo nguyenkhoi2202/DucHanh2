@@ -751,7 +751,7 @@ function generateVietQR() {
             accountNo: 888974974,
             accountName: "TRAN THI HA MY",
             acqId: 970441,
-            amount: document.getElementById('moneyGenQR').value + '000',
+            amount:  document.getElementById('moneyGenQR').value ? document.getElementById('moneyGenQR').value + '000' : '',
             addInfo: document.getElementById('name').value + " Thanh toan nha khoa ngay " + timeString,
             format: "text",
             template: "compact"
