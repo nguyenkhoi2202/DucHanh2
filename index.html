@@ -220,6 +220,7 @@
                 <h2 id="clock" style="margin: 0;  margin-right: 30px; font-size:34px; font-weight: bold; color: #007bff;">time</h2>  <br/>
                 <i class="bi bi-telephone-fill"></i> 0947 137 139 (Đức Hạnh) 
                 <i class="bi bi-telephone-fill"></i> 0888 974 974 (Hà My)
+                 <button class="btn btn-danger" onclick="logout()">Đăng xuất</button>
             </div>              
 
       </div>
@@ -409,6 +410,18 @@
             © Copyright 2024 <a href="https://facebook.com/nguyenkhoi2202">KhoiTN</a>. Bản quyền thuộc  về <a href="https://facebook.com/nguyenkhoi2202">KhoiTN</a>.
         </p>
     </div>
+    <script>
+  function logout() {
+    localStorage.removeItem("isLoggedIn");
+    window.location.href = "login.html";
+  }
+</script>
+    <script>
+        // Chặn truy cập nếu chưa đăng nhập
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+            window.location.href = "login.html";
+        }
+    </script>
     
 
     <script src="app.js"></script>
