@@ -418,9 +418,26 @@
 </script>
     <script>
         // Chặn truy cập nếu chưa đăng nhập
-        if (localStorage.getItem("isLoggedIn") !== "true") {
-            window.location.href = "login.html";
-        }
+        // if (localStorage.getItem("isLoggedIn") !== "true") {
+        //     window.location.href = "login.html";
+        // }
+        function checkSession() {
+  const session = JSON.parse(localStorage.getItem("session"));
+
+  if (!session || !session.isLoggedIn) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  const now = new Date().getTime();
+  if (now > session.expireAt) {
+    localStorage.removeItem("session");
+    alert("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
+    window.location.href = "login.html";
+  }
+}
+
+checkSession();
     </script>
     
 
